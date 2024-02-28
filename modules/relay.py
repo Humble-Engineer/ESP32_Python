@@ -23,4 +23,13 @@ class RELAY:
             
             self.value(0)
             
+            
+if __name__ == "__main__":
+    
+    from time import sleep
 
+    relay_stepper = RELAY(32)
+
+    relay_stepper.set("on")
+    sleep(2)
+    relay_stepper.set("off")

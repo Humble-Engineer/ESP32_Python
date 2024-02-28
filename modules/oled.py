@@ -1,12 +1,9 @@
 
 from machine import Pin, SoftI2C, I2C, Timer
 
-#交互器接口模块sys的导入
-import sys
-#在根目录下进入drivers文件夹
-sys.path.append('./drivers')
+
 # 导入驱动库（ssd1306）
-from ssd1306 import SSD1306_I2C
+from modules.drivers.ssd1306 import SSD1306_I2C
 
 class OLED:
     
@@ -122,3 +119,39 @@ class OLED:
         
         tim = Timer(self.timer_id)
         tim.deinit()
+        
+if __name__ == "__main__":
+    
+    import os
+
+    current_path = os.getcwd()
+    print("Current working directory:", current_path)
+
+
+    #配置oled显示器
+    oled = OLED(scl=18,sda=19,timer=(3,1000),
+                
+                top='moniter',
+                top_site=(15,0),
+                
+                sub1='Flash times:',
+                sub1_site=(16,20),
+                
+                sub2="Last order:",
+                sub2_site=(20,40),
+                
+                data1="",
+                data1_site =(55,30),
+                
+                data2="",
+                data2_site =(40,50))
+
+    oled.start()
+
+#如果需要后期修改显示内容，直接修改属性即可
+#oled.top_heading='Hello World!'
+
+
+
+
+

@@ -79,4 +79,20 @@ class STEPPER:
         self.ena.value(1)
         
 
+if __name__ == "__main__":
+    
+    from time import sleep,sleep_ms,sleep_us
+    
+    #实例化一个步进电机对象
+    stepper = STEPPER(ena=4,dir=2,pul=15)
 
+    for i in range(1):
+        
+        #以300rmp的速度按逆时针方向旋转10圈
+        stepper.location(rol=11,spd=260,dir="anticlock")
+        sleep(2)
+
+        #以300rmp的速度按顺时针方向旋转10圈
+        stepper.location(rol=11,spd=260,dir="clockwise")
+        sleep(2)
+    

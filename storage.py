@@ -1,43 +1,38 @@
-#交互器接口模块sys的导入
-import sys
-#回到上级目录
-sys.path.append("..")
-#在根目录下进入drivers文件夹
-sys.path.append('./drivers')
+
 
 from time import sleep,sleep_ms,sleep_us
 from machine import Timer
 
 #导入ldr.py中的LDR类
-from ldr import LDR
+from modules.ldr import LDR
 #设置模拟量读取引脚，定时器id和触发间隔（ms）
 ldr = LDR(pin=34)
 
 #导入motor.py中的MOTOR类
-from motor import MOTOR
+from modules.motor import MOTOR
 #实例化一个电机对象（注意速度引脚PWM占用的定时器id）
 motor = MOTOR(spd=33,ena=25,dir=26)
 
 #导入stepper.py中的STEPPER类
-from stepper import STEPPER
+from modules.stepper import STEPPER
 #实例化一个步进电机对象
 stepper = STEPPER(ena=4,dir=2,pul=15)
 
 
 #导入sd.py中的SD类
-from sd import SD
+from modules.sd import SD
 #初始化sd卡的SPI总线
 sd = SD(miso=13,mosi=12,sck=14,cs=27)
 
 
 # 在screen.py模块中导入TjcUart这个类
-from screen import TjcUart
+from modules.screen import TjcUart
 #实例化对象（设置使用的串口以及数据帧格式）
 tjc_uart = TjcUart(id=2,baudrate=115200,tx=17,rx=16,
            begin='|',end='~',num_pos='#',num_neg='$')
 
 #导入oled.py中的OLED类
-from oled import OLED
+from modules.oled import OLED
 #配置oled显示器
 oled = OLED(scl=18,sda=19,timer=(3,1000),
             
@@ -128,10 +123,22 @@ while 1:
         elif cmd_recv[0] == "Stepper_Dir":
     
             if cmd_recv[1] == 0:
+                
+                #禁用OLED显示器（启用oled刷新会导致运动不连续）
+                oled.stop()
+                #步进电机执行运动
                 stepper.location(rol=11,spd=260,dir="anticlock")
+                #重新启用OLED显示器
+                oled.start()
                 
             elif cmd_recv[1] == 1:
+                
+                #禁用OLED显示器（启用oled刷新会导致运动不连续）
+                oled.stop()
+                #步进电机执行运动
                 stepper.location(rol=11,spd=260,dir="clockwise")
+                #重新启用OLED显示器
+                oled.start()
                 
             else:
                 print("步进电机未知指令！",end='\n')

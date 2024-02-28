@@ -31,4 +31,15 @@ class LDR:
         #print(self.lux)
         #print(self.voltage)
 
-   
+if __name__ == "__main__":
+    
+    from time import sleep
+    
+    #设置模拟量读取引脚，定时器id和触发间隔（ms）
+    ldr = LDR(pin=34)
+
+    while 1:
+        ldr.calculate()
+        print(ldr.voltage)
+        sleep(1)
+    

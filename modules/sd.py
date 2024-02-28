@@ -1,6 +1,8 @@
 import os
 from machine import Pin, SoftSPI
-from sdcard import SDCard
+
+
+from modules.drivers.sdcard import SDCard
 
 # 接线说明:
 # MISO -> GPTO 19
@@ -64,5 +66,15 @@ class SD:
         with open(path,"w") as f:
             f.write("")
             
+if __name__ == "__main__":
+    
+    #初始化sd卡的SPI总线
+    sd = SD(miso=13,mosi=12,sck=14,cs=27)
+    #查看sd卡中根目录下的文件
+    sd.view()
 
+    #向'文件名'写入'内容'，没有此文件名会自动生成
+    sd.write('test0.txt','hello world!')
+    sd.write('test1.txt',str(114514))
+    sd.write('test2.txt',str(3.14159))
 
